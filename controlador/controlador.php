@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../modelo/modelo.php';
-session_start(); // Asegúrate de iniciar la sesión
+ // Asegúrate de iniciar la sesión
 
 // Inicializa el carrito si no está definido
 if (!isset($_SESSION['carrito'])) {
@@ -39,4 +39,37 @@ if (isset($_POST['paypal_payment_complete']) && $_POST['paypal_payment_complete'
     header("Location: /Producto3DWI/Producto3DWI/index.php");
     exit();
 }
+
+if (isset($_POST['accion']) && $_POST['accion'] == 'agregar_vehiculo') {
+    $nombre = $_POST['nombre'];
+    $precio = $_POST['precio'];
+    $imagen = $_FILES['imagen']['name'];
+
+    // Validación de datos
+    if (empty($nombre) || empty($precio) || empty($imagen)) {
+        // Redirigir con un mensaje de error
+        header("Location: /Producto3DWI/Producto3DWI/admin.php?error=faltan_datos");
+        exit();
+    }
+
+    // Validación del tipo de archivo
+    $allowed_types = array('image/jpeg', 'image/png', 'image/gif');
+    if (!in_array($_FILES['imagen']['type'], $allowed_types)) {
+        // Redirigir con un mensaje de error
+        header("Location: /Producto3DWI/Producto3DWI/admin.php?error=tipo_de_archivo_invalido");
+        exit();
+    }
+
+    // Subir imagen
+    $target_dir = "C:/xampp/htdocs/Producto3DWI/Producto3DWI/assets/img/";
+    $target_file = $target_dir . uniqid() . "_" . basename($_FILES["imagen"]["name"]);
+    if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_file)) {
+        agregarVehiculo($nombre, $precio, $target_file);
+        header("Location: /Producto3DWI/Producto3DWI/admin.php?exito=vehiculo_agregado");
+    } else {
+        // Redirigir con un mensaje de error
+        header("Location: /Producto3DWI/Producto3DWI/admin.php?error=error_al_subir_imagen");
+    }
+}
+
 ?>

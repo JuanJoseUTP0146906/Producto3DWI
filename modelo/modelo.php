@@ -58,4 +58,14 @@ function guardarCompra($usuario_id) {
     // Vaciar el carrito después de guardar la compra
     $_SESSION['carrito'] = array();
 }
+
+
+
+function agregarVehiculo($nombre, $precio, $imagen) {
+    global $pdo;
+    $stmt = $pdo->prepare('INSERT INTO vehiculos (nombre, precio, imagen) VALUES (?, ?, ?)');
+    $stmt->execute([$nombre, $precio, $imagen]);
+}
+
+
 ?>

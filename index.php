@@ -1,5 +1,5 @@
 <?php
-session_start(); // Añade esto al principio de cada archivo PHP que utilice sesiones
+// Añade esto al principio de cada archivo PHP que utilice sesiones
 include 'templates/header2.php';
 ?>
 
