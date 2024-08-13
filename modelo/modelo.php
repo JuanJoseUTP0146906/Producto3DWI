@@ -1,4 +1,6 @@
 <?php
+  // Asegúrate de que la sesión está iniciada
+
 // Conexión a la base de datos
 try {
     $pdo = new PDO('mysql:host=localhost;dbname=producto3', 'root', '');
@@ -22,7 +24,6 @@ function obtenerVehiculoPorId($id) {
 }
 
 function obtenerTotalCarrito() {
-    global $pdo;
     $total = 0;
     if (!empty($_SESSION['carrito'])) {
         foreach ($_SESSION['carrito'] as $id => $cantidad) {
@@ -59,13 +60,9 @@ function guardarCompra($usuario_id) {
     $_SESSION['carrito'] = array();
 }
 
-
-
 function agregarVehiculo($nombre, $precio, $imagen) {
     global $pdo;
     $stmt = $pdo->prepare('INSERT INTO vehiculos (nombre, precio, imagen) VALUES (?, ?, ?)');
     $stmt->execute([$nombre, $precio, $imagen]);
 }
-
-
 ?>

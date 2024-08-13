@@ -37,6 +37,6 @@ if(mysqli_stmt_execute($queryregistrar)) {
 }
 } else {
     // El reCAPTCHA no se ha verificado correctamente, muestra un mensaje de error
-    echo "<script> alert('Error: Por favor, verifica que eres humano.');window.location= 'index.php' </script>";
+    echo "<script> alert('Error: Por favor, verifica que eres humano.');window.location= 'index.html' </script>";
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
+session_start(); // Iniciar sesión
 require __DIR__ . '/../modelo/modelo.php';
- // Asegúrate de iniciar la sesión
 
 // Inicializa el carrito si no está definido
 if (!isset($_SESSION['carrito'])) {
@@ -40,6 +40,7 @@ if (isset($_POST['paypal_payment_complete']) && $_POST['paypal_payment_complete'
     exit();
 }
 
+// Agregar un nuevo vehículo (desde un formulario de administración)
 if (isset($_POST['accion']) && $_POST['accion'] == 'agregar_vehiculo') {
     $nombre = $_POST['nombre'];
     $precio = $_POST['precio'];
@@ -47,7 +48,6 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'agregar_vehiculo') {
 
     // Validación de datos
     if (empty($nombre) || empty($precio) || empty($imagen)) {
-        // Redirigir con un mensaje de error
         header("Location: /Producto3DWI/Producto3DWI/admin.php?error=faltan_datos");
         exit();
     }
@@ -55,7 +55,6 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'agregar_vehiculo') {
     // Validación del tipo de archivo
     $allowed_types = array('image/jpeg', 'image/png', 'image/gif');
     if (!in_array($_FILES['imagen']['type'], $allowed_types)) {
-        // Redirigir con un mensaje de error
         header("Location: /Producto3DWI/Producto3DWI/admin.php?error=tipo_de_archivo_invalido");
         exit();
     }
@@ -64,12 +63,10 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'agregar_vehiculo') {
     $target_dir = "C:/xampp/htdocs/Producto3DWI/Producto3DWI/assets/img/";
     $target_file = $target_dir . uniqid() . "_" . basename($_FILES["imagen"]["name"]);
     if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_file)) {
-        agregarVehiculo($nombre, $precio, $target_file);
+        agregarVehiculo($nombre, $precio, basename($target_file)); // Guardar solo el nombre del archivo
         header("Location: /Producto3DWI/Producto3DWI/admin.php?exito=vehiculo_agregado");
     } else {
-        // Redirigir con un mensaje de error
         header("Location: /Producto3DWI/Producto3DWI/admin.php?error=error_al_subir_imagen");
     }
 }
-
 ?>
